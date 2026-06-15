@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoDiagnóstico Bovino IA</title>
+    <style>
+        /* Paleta de Colores Verdes Campo */
+        :root {
+            --verde-oscuro: #1a4731;
+            --verde-principal: #2e7d32;
+            --verde-claro: #a5d6a7;
+            --verde-fondo: #f1f8e9;
+            --blanco: #ffffff;
+            --gris-texto: #546e7a;
+            --rojo-vacia: #c62828;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--verde-fondo); 
+            margin: 0; 
+            padding: 20px; 
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .contenedor { 
+            background-color: var(--blanco); 
+            width: 100%;
+            max-width: 550px; 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            border: 1px solid var(--verde-claro);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 { 
+            color: var(--verde-oscuro); 
+            margin: 0; 
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .subtitulo {
+            color: var(--gris-texto);
+            margin-top: 5px;
+            font-size: 16px;
+        }
+
+        /* Estilos de los inputs */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid var(--verde-claro);
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--verde-principal);
+        }
+
+        input[type="file"] { 
+            margin-bottom: 15px; 
+            width: 100%; 
+            max-width: 300px;
+        }
+
+        /* Área de subida de imagen */
+        .seccion-imagen {
+            border: 2px dashed var(--verde-claro);
+            border-radius: 15px;
+            padding: 15px;
+            background-color: #fafdfb;
+            text-align: center;
+            margin-bottom: 25px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ecografia-img { 
+            max-width: 100%; 
+            max-height: 350px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 10px;
+            border: 3px solid var(--blanco);
+        }
+
+        #texto-ayuda {
+            color: var(--verde-principal);
+            font-weight: bold;
+        }
+
+        /* Botón Principal */
+        button { 
+            background-color: var(--verde-principal); 
+            color: var(--blanco); 
+            border: none; 
+            padding: 15px 30px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            width: 100%; 
+            box-shadow: 0 4px 6px rgba(46, 125, 50, 0.2);
+        }
+
+        button:hover { 
+            background-color: var(--verde-oscuro); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 125, 50, 0.3);
+        }
+
+        /* Panel de Resultados */
+        .panel-resultado { 
+            margin-top: 30px; 
+            padding: 25px; 
+            border-radius: 15px; 
+            background-color: var(--blanco);
+            border: 1px solid #eee;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .titulo-resultado {
+            font-size: 14px;
+            color: var(--gris-texto);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .diagnostico-final { 
+            font-size: 36px; 
+            font-weight: 800; 
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .status-preñada { color: var(--verde-principal); }
+        .status-vacía { color: var(--rojo-vacia); }
+
+        .contenedor-precision {
+            text-align: center;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .texto-precision { font-size: 16px; color: #333; }
+        .nivel-confianza { font-weight: bold; font-size: 18px; padding: 2px 8px; border-radius: 5px; }
+        
+        .confianza-alta { background-color: #e8f5e9; color: var(--verde-principal); }
+        .confianza-vacia { background-color: #ffebee; color: var(--rojo-vacia); }
+
+        /* Botón de Excel */
+        .btn-descarga {
+            display: inline-block;
+            background-color: var(--blanco);
+            color: var(--verde-oscuro);
+            border: 2px solid var(--verde-oscuro);
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-descarga:hover {
+            background-color: var(--verde-fondo);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="contenedor">
+        <header>
+            <h1>🔬 EcoDiagnóstico Bovino</h1>
+            <div class="subtitulo">Inteligencia Artificial aplicada al campo</div>
+        </header>
+        
+        <form method="POST" enctype="multipart/form-data">
+            
+            <div>
+                <label for="caravana" style="font-weight: bold; color: var(--verde-oscuro); display: block; margin-bottom: 8px; text-align: left;">N° de Caravana:</label>
+                <input type="text" id="caravana" name="caravana" placeholder="Ej: V-402" value="{{ caravana if caravana else '' }}" required>
+            </div>
+
+            <div class="seccion-imagen">
+                {% if imagen_demostrada %}
+                    <img src="data:image/jpeg;base64,{{ imagen_demostrada }}" class="ecografia-img" alt="Ecografía analizada">
+                {% else %}
+                    <p id="texto-ayuda">Selecciona la ecografía o usa la cámara</p>
+                    <img id="vista-previa" src="#" class="ecografia-img" style="display: none;" alt="Vista previa">
+                {% endif %}
+                
+                <div style="margin-top: 15px;">
+                    <input type="file" name="archivo" accept="image/*" capture="environment" required onchange="mostrarVistaPrevia(event)">
+                </div>
+            </div>
+            
+            <button type="submit">Analizar Ecografía</button>
+        </form>
+        
+        {% if resultado %}
+            <div class="panel-resultado">
+                <div class="titulo-resultado">Resultado para Caravana {{ caravana }}</div>
+                
+                <div class="diagnostico-final {% if resultado == 'Preñada' %}status-preñada{% else %}status-vacía{% endif %}">
+                    {% if resultado == 'Preñada' %}✅{% else %}⭕️{% endif %} {{ resultado }}
+                </div>
+
+                <div class="contenedor-precision">
+                    <span class="texto-precision">
+                        Confianza de la IA: 
+                        <span class="nivel-confianza {% if resultado == 'Preñada' %}confianza-alta{% else %}confianza-vacia{% endif %}">
+                            {{ confianza }}%
+                        </span>
+                    </span>
+                </div>
+            </div>
+        {% endif %}
+
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+            <a href="/descargar_excel" class="btn-descarga">
+                📥 Descargar Reporte (Excel)
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        function mostrarVistaPrevia(event) {
+            var imagenFija = document.querySelector('.seccion-imagen img:not(#vista-previa)');
+            if (imagenFija) imagenFija.style.display = 'none';
+
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('vista-previa');
+                var texto = document.getElementById('texto-ayuda');
+                output.src = reader.result;
+                output.style.display = 'block';
+                if (texto) texto.style.display = 'none';
+            };
+            if(event.target.files[0]){
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+    </script>
+
+</body>
+</html>
