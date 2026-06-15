@@ -1,6 +1,0 @@
-flask
-gunicorn
-gdown
-numpy
-pillow
-tensorflow-cpu
