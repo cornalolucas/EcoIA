@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoDiagnóstico Bovino IA</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f4f7f6; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .seccion-imagen { border: 2px dashed #ccc; padding: 20px; margin: 20px 0; border-radius: 10px; cursor: pointer; }
+        .ecografia-img { max-width: 100%; margin-top: 10px; border-radius: 5px; }
+        button { background-color: #28a745; color: white; border: none; padding: 15px 30px; border-radius: 5px; font-size: 16px; width: 100%; cursor: pointer; }
+        input[type="text"] { width: 90%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>EcoDiagnóstico IA</h1>
+        
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <input type="text" name="caravana" placeholder="Número de Caravana" required>
+            
+            <div class="seccion-imagen" onclick="document.getElementById('file-input').click()">
+                <p>📷 Toca aquí para elegir foto o abrir cámara</p>
+                <img id="vista-previa" class="ecografia-img" style="display: none;">
+                <!-- Este input permite cámara en celular -->
+                <input type="file" id="file-input" name="archivo" accept="image/*" capture="environment" required onchange="mostrarVistaPrevia(event)" style="display: none;">
+            </div>
+
+            <button type="submit">Analizar Ecografía</button>
+        </form>
+
+        {% if resultado %}
+            <div style="margin-top: 20px; padding: 10px; background: #e8f5e9;">
+                <h2>Resultado: {{ resultado }}</h2>
+                <p>Confianza: {{ confianza }}%</p>
+            </div>
+        {% endif %}
+
+        <br>
+        <a href="/descargar_excel">Descargar Historial (CSV)</a>
+    </div>
+
+    <script>
+        function mostrarVistaPrevia(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const img = document.getElementById('vista-previa');
+                img.src = reader.result;
+                img.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>
