@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoDiagnóstico Bovino IA</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1a4731;
+            --background: #f4f7f6;
+            --surface: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --text-faint: #94a3b8; /* Gris tenue para autor */
+            --whatsapp: #25D366;
+            --whatsapp-dark: #1ebe57;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            text-align: center;
+            background-color: var(--background);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 460px;
+            width: 100%;
+            margin: auto;
+            background: var(--surface);
+            padding: 30px 24px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: var(--primary-dark);
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dcdde1;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+        }
+
+        .upload-area {
+            border: 2px dashed #b2bec3;
+            padding: 35px 20px;
+            margin: 24px 0;
+            border-radius: 16px;
+            cursor: pointer;
+            background: #fafbfc;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .upload-area:hover {
+            background: #f1f2f6;
+            border-color: var(--primary);
+        }
+
+        .upload-area p {
+            margin: 0;
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .upload-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .ecografia-img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        button[type="submit"] {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+        }
+
+        button[type="submit"]:hover {
+            background: var(--primary-dark);
+        }
+
+        button[type="submit"]:active {
+            transform: scale(0.99);
+        }
+
+        .result-card {
+            margin-top: 24px;
+            padding: 20px;
+            background: #e8f5e9;
+            border-radius: 16px;
+            border-left: 5px solid var(--primary);
+            text-align: left;
+        }
+
+        .result-title {
+            margin: 0 0 4px 0;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .result-main {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+        }
+
+        .result-meta {
+            font-size: 14px;
+            color: var(--text-main);
+            margin: 2px 0;
+        }
+
+        .btn-whatsapp {
+            display: block;
+            text-align: center;
+            background-color: var(--whatsapp);
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            margin-top: 16px;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+            box-sizing: border-box;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: var(--whatsapp-dark);
+        }
+
+        .btn-whatsapp:active {
+            transform: scale(0.99);
+        }
+
+        .btn-download {
+            display: inline-block;
+            margin-top: 24px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .btn-download:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .author-tag {
+            margin-top: 35px;
+            font-size: 12px;
+            color: var(--text-faint);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔬 EcoDiagnóstico</h1>
+        <div class="subtitle">Sistema Clínico de Inferencia Bovino</div>
+        
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="caravana">Identificación Animal</label>
+                <input type="text" id="caravana" name="caravana" placeholder="Ej: V-402" required>
+            </div>
+            
+            <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                <span class="upload-icon">📷</span>
+                <p id="texto-ayuda">Toca para abrir la Cámara o buscar en la Galería</p>
+                <img id="vista-previa" class="ecografia-img" style="display: none;">
+                <input type="file" id="file-input" name="archivo" accept="image/*" required style="display:none;" onchange="mostrarVistaPrevia(event)">
+            </div>
+            
+            <button type="submit">Analizar Ecografía</button>
+        </form>
+
+        {% if resultado %}
+            <div class="result-card">
+                <div class="result-title">Diagnóstico Completado</div>
+                <div class="result-main">Resultado: {{ resultado }}</div>
+                <div class="result-meta">Caravana evaluada: <strong>{{ caravana }}</strong></div>
+                <div class="result-meta">Índice de certeza: <strong>{{ confianza }}%</strong></div>
+                
+                <a href="https://wa.me/?text={{ wa_link }}" target="_blank" class="btn-whatsapp">
+                    📲 Enviar Informe por WhatsApp
+                </a>
+            </div>
+        {% endif %}
+        
+        <a href="/descargar_reporte" class="btn-download">📥 Descargar Base de Datos CSV</a>
+        
+        <div class="author-tag">By MV. Lucas Cornalo</div>
+    </div>
+
+    <script>
+        function mostrarVistaPrevia(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const img = document.getElementById('vista-previa');
+                img.src = reader.result;
+                img.style.display = 'block';
+                document.getElementById('texto-ayuda').style.display = 'none';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>
